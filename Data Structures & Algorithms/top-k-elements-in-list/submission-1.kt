@@ -1,18 +1,13 @@
 class Solution {
-    fun groupAnagrams(strs: Array<String>): List<List<String>> {
-        var map = HashMap<String, MutableList<String>>()
-        for (s in strs) {
-            var key = frequancy(s)
-            map.getOrPut(key, {mutableListOf()}).add(s)
+    fun topKFrequent(nums: IntArray, k: Int): IntArray {
+        var map = HashMap<Int, Int>()
+        for (i in nums) {
+            map[i] = map.getOrDefault(i, 0) + 1
         }
-        return map.values.toList()
-    }
-
-    fun frequancy(s: String): String {
-        var count = IntArray(26)
-        for(ch in s) {
-            count[ch - 'a']++
+        var bucket = Array(nums.size +1) {mutableListOf<Int>()}
+        for((key, freq) in map) {
+            bucket[freq].add(key)
         }
-        return count.joinToString(",")
+        return bucket.flatMap {it} .takeLast(k).toIntArray()
     }
 }
